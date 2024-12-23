@@ -1,0 +1,123 @@
+/* adds.css */
+
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s, visibility 0.3s;
+}
+
+.popup-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.popup-container {
+  display: flex;
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  width: 90%;
+  max-width: 1200px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  max-height: 80vh; /* Ensure it fits within viewport height */
+  position: relative;
+}
+
+.left {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.left img {
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: 4px;
+  object-fit: cover;
+}
+
+.right {
+  flex: 0;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.skip-button {
+  background: black;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 16px;
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.popup-heading {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.description {
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+.visit-button {
+  background: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 4px;
+  text-decoration: none;
+  font-size: 16px;
+  display: inline-block;
+  text-align: center;
+}
+
+.visit-button:hover {
+  background: #0056b3;
+}
+
+/* Responsive styling */
+@media (max-width: 768px) {
+  .popup-container {
+    flex-direction: column;
+    width: 100%;
+    max-height: 50%; /* Allow container to expand on smaller screens */
+  }
+
+  .left,
+  .right {
+    width: 100%;
+  }
+
+  .skip-button {
+    font-size: 14px;
+  }
+
+  .logo,
+  .popup-heading,
+  .description,
+  .visit-button {
+    font-size: 14px;
+  }
+}
