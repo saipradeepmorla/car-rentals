@@ -77,7 +77,7 @@ const Form = () => {
       formData.append("estimatedPrice", totalPrice.toFixed(2));
 
       const params = new URLSearchParams(formData).toString();
-      const url = `${import.meta.env.VITE_GOOGLE_SHEETS_API}?${params}`;
+      const url = `${import.meta.env.VITE_GOOGLE_SHEETS_URL_VISITORS}?${params}`;
 
       // Send data using Axios GET request
       const response = await axios.get(url);

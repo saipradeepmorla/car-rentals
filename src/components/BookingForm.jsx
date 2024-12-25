@@ -35,7 +35,7 @@ const BookingForm = ({ car, onClose }) => {
       formData.append("carName", car.name);
       Object.keys(data).forEach((key) => formData.append(key, data[key]));
 
-      await axios.post(import.meta.env.VITE_GOOGLE_SHEETS_API2, formData);
+      await axios.post(import.meta.env.VITE_GOOGLE_SHEETS_URL_BOOKING, formData);
       toast.success("Booking submitted successfully!");
       onClose();
       setLoading(false);

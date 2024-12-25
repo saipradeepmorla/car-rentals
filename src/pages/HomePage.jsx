@@ -11,6 +11,7 @@ import ServicesSection from "../components/ServiceSection";
 import Testimonials from "../components/Testimonials";
 import Adds from "../Adds/adds";
 import ContactLocations from "../components/ContactLocations";
+import FloatingButtons from "../components/FloatingButtons";
 
 const HomePage = () => {
   return (
@@ -27,7 +28,7 @@ const HomePage = () => {
       {/* <ContactSection /> */}
       <ContactLocations />
       <FAQSection />
-     
+     <FloatingButtons/>
       <Adds />
     </>
   );

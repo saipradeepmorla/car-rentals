@@ -25,7 +25,7 @@ export default function ServicesSection() {
   ];
 
   return (
-    <section className="bg-gray-100 text-gray-800 py-20 px-5">
+    <section id="services" className="bg-gray-100 text-gray-800 py-20 px-5">
       <div className="container mx-auto">
         <h2 className="text-3xl font-bold text-center mb-10">Our Services</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10">

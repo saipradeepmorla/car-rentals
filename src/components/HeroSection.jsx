@@ -60,7 +60,8 @@ const HeroSection = () => {
             }}
             className="flex flex-col sm:flex-row justify-center gap-4 px-4"
           >
-            <motion.button
+            <motion.a
+              href="#fleet"
               whileHover={{ 
                 scale: 1.05,
                 transition: { duration: 0.2 }
@@ -69,7 +70,7 @@ const HeroSection = () => {
               className="bg-black ring-1 ring-white hover:text-black hover:bg-white text-white px-6 py-3 rounded-lg text-base md:text-lg font-medium shadow-lg w-full sm:w-auto"
             >
               Book Now
-            </motion.button>
+            </motion.a>
             <motion.a
               href="#contact"
               whileHover={{ 

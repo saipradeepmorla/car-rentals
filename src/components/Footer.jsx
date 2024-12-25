@@ -1,12 +1,31 @@
 import { motion } from "motion/react";
-import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin } from "react-icons/fa";
+import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin, FaWhatsapp } from "react-icons/fa";
 
 const Footer = () => {
   const socialIcons = [
-    { id: 1, icon: <FaFacebook />, link: "#" },
-    { id: 2, icon: <FaTwitter />, link: "#" },
+    { id: 1, icon: <FaWhatsapp />, link: "https://wa.me/919063060170" },
     { id: 3, icon: <FaInstagram />, link: "#" },
-    { id: 4, icon: <FaLinkedin />, link: "#" },
+  ];
+  const footerNav = [{
+    id: 1,
+    name: "Home",
+    link: "#",
+  }, 
+  {
+    id: 2,
+    name: "Cars",
+    link: "#fleet",
+  },
+  {
+    id: 3,
+    name: "Services",
+    link: "#services",
+  },
+  {
+    id: 4,
+    name: "Contact",
+    link: "#contact",
+  },
   ];
 
   return (
@@ -25,7 +44,7 @@ const Footer = () => {
             transition={{ duration: 0.5 }}
             className="text-2xl font-bold mb-4"
           >
-            ROAD ROVER
+            Imran Car Travels
           </motion.h1>
           <motion.p
             initial={{ opacity: 0 }}
@@ -61,13 +80,13 @@ const Footer = () => {
             }}
             className="space-y-2"
           >
-            {["Home", "Cars", "Services", "Contact"].map((link, idx) => (
+            {footerNav.map((item) => (
               <motion.li
-                key={idx}
+                key={item.id}
                 whileHover={{ scale: 1.1 }}
                 className="hover:text-gray-400 cursor-pointer transition transform origin-left"
               >
-                {link}
+               <a href={item.link}> {item.name}</a>
               </motion.li>
             ))}
           </motion.ul>
@@ -89,15 +108,17 @@ const Footer = () => {
             transition={{ delay: 0.4, duration: 0.5 }}
             className="space-y-2"
           >
-            <p>123 Main Street, Downtown City</p>
-            <p>Email: info@roadrover.com</p>
-            <p>Phone: +1 234 567 890</p>
+            {/* <p>123 Main Street, Downtown City</p> */}
+            <p>Email: kiyanshaik6579@gmail.com</p>
+            <p>Phone: +91 90630 60170</p>
+            <p>Phone: +91 91829 87176</p>
           </motion.div>
           <div className="flex mt-4 space-x-4">
             {socialIcons.map((social) => (
               <motion.a
                 key={social.id}
                 href={social.link}
+                target="_blank"
                 whileHover={{ scale: 1.2, rotate: 15 }}
                 className="text-xl hover:text-gray-400 transition"
               >
@@ -115,7 +136,7 @@ const Footer = () => {
         transition={{ delay: 0.5, duration: 0.6 }}
         className="mt-8 text-center text-gray-500 text-sm"
       >
-        &copy; {new Date().getFullYear()} ROAD ROVER. All rights reserved.
+        &copy; {new Date().getFullYear()} Imran Car Travels. All rights reserved By <a className="hover:text-white" href="https://businessvictorysolutions.in/">BVS</a>.
       </motion.div>
     </footer>
   );

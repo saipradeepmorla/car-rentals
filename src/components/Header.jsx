@@ -22,6 +22,7 @@ const Header = () => {
     { name: "Home", href: "#home" },
     { name: "About", href: "#about" },
     { name: "Fleet", href: "#fleet" },
+    { name: "Services", href: "#services" },
     { name: "Contact", href: "#contact" },
   ];
 
@@ -36,14 +37,15 @@ const Header = () => {
     >
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
         {/* Logo with dynamic text color */}
-        <motion.div
+        <motion.a
+          href="#"
           whileHover={{ scale: 1.05 }}
           className={`text-2xl font-bold transition-colors duration-300 ${
             isScrolled ? "text-gray-900" : "text-white"
           }`}
         >
-          RoadRover
-        </motion.div>
+          Imran Car Travels
+        </motion.a>
 
         {/* Desktop Navigation with dynamic text color */}
         <nav className="hidden md:flex space-x-6">

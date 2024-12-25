@@ -1,108 +1,119 @@
 import React, { useEffect, useRef, useState } from "react";
-import { motion } from "motion/react";
 import {
   FaMapMarkerAlt,
   FaUserAlt,
   FaEnvelope,
   FaPhone,
- FaWhatsapp,
+  FaWhatsapp,
   FaInstagram,
-  
+  FaExternalLinkAlt,
 } from "react-icons/fa";
 
-
 const ContactLocations = () => {
-  const contactDetails = {
-    companyName: "Imran Car Travels",
-    name: "Imran",
-    phone1: "+91 90630 60170",
-    phone2: "+91 91829 87176",
-    email: "kiyanshaik6579@gmail.com",
-  };
+  const contactDetails = [
+    {
+      name: "Imran",
+      role: "Primary Contact",
+      phone1: "+91 90630 60170",
+      phone2: "+91 91829 87176",
+    },
+    {
+      name: "Syed Sajid",
+      role: "Secondary Contact",
+      phone1: "+91 95733 32016",
+    },
+  ];
 
+  const email = "kiyanshaik6579@gmail.com";
+  
   const [isLoaded, setIsLoaded] = useState(false);
   const mapContainerRef = useRef(null);
   const mapRef = useRef(null);
   const markersRef = useRef([]);
   const infoWindowsRef = useRef([]);
 
+  // 16.526443, 79.210930
   const mapCenter = {
-    lat: 15.9167125,
-    lng: 79.9964902,
+    lat: 16.526443,
+    lng: 79.210930,
   };
 
   const locations = [
     {
-      name: "Imran Car Travels - Vijayawda",
+      name: "Imran Car Travels - Vijayawada",
       coordinates: { lat: 16.4778952, lng: 80.7104726 },
+      address: "Vijayawada, Andhra Pradesh",
     },
     {
       name: "Imran Car Travels - Singarayakonda",
       coordinates: { lat: 15.3260889, lng: 79.8827955 },
+      address: "Singarayakonda, Andhra Pradesh",
     },
     {
       name: "Imran Car Travels - Ongole",
       coordinates: { lat: 15.5048639, lng: 80.0173205 },
+      address: "Ongole, Andhra Pradesh",
     },
     {
-      name: "Imran Car Travels - Gunturu",
+      name: "Imran Car Travels - Guntur",
       coordinates: { lat: 16.3032058, lng: 80.4388482 },
+      address: "Guntur, Andhra Pradesh",
     },
     {
-      name: "Imran Car Travels - Vijawada",
+      name: "Imran Car Travels - Vijayawada City",
       coordinates: { lat: 16.513219947706, lng: 80.6677908450365 },
+      address: "Vijayawada City Center, Andhra Pradesh",
     },
     {
       name: "Imran Car Travels - Hyderabad",
       coordinates: { lat: 17.4668367, lng: 78.3550581 },
+      address: "Hyderabad, Telangana",
     },
   ];
 
+  const getGoogleMapsUrl = (location) => {
+    return `https://www.google.com/maps/search/?api=1&query=${location.coordinates.lat},${location.coordinates.lng}`;
+  };
+
   useEffect(() => {
     const initializeMap = () => {
-      if (
-        !window.google ||
-        !mapContainerRef.current ||
-        !window.google.maps.marker
-      )
-        return;
+      if (!window.google || !mapContainerRef.current || !window.google.maps.marker) return;
 
-      // Create the map instance with a Map ID
       mapRef.current = new window.google.maps.Map(mapContainerRef.current, {
         center: mapCenter,
-        zoom: 8,
+        zoom: 7,
         zoomControl: true,
         mapTypeControl: true,
         streetViewControl: true,
         fullscreenControl: true,
-        mapId: "YOUR_MAP_ID", // You need to replace this with your actual Map ID from Google Cloud Console
+        mapId: import.meta.env.VITE_GOOGLE_MAP_ID ,
       });
 
-      // Create markers
       locations.forEach((location, index) => {
-        // Create info window first
         const infoWindow = new google.maps.InfoWindow({
           content: `
-            <div style="padding: 8px; max-width: 200px;">
-              <strong style="color: #1a73e8;">${location.name}</strong>
-              <p style="margin: 8px 0 0 0; font-size: 14px;">Click for directions</p>
+            <div class="p-4 max-w-xs">
+              <h3 class="font-bold text-blue-600 mb-2">${location.name}</h3>
+              <p class="text-sm mb-2">${location.address}</p>
+              <a href="${getGoogleMapsUrl(location)}" 
+                 target="_blank" 
+                 rel="noopener noreferrer" 
+                 class="text-blue-500 hover:text-blue-700 text-sm">
+                Open in Google Maps
+              </a>
             </div>
           `,
         });
         infoWindowsRef.current.push(infoWindow);
 
-        // Create advanced marker
         const marker = new google.maps.marker.AdvancedMarkerElement({
           map: mapRef.current,
           position: location.coordinates,
           title: location.name,
         });
 
-        // Add the gmp-click event listener
         marker.addEventListener("gmp-click", () => {
-          // Close all open info windows
           infoWindowsRef.current.forEach((iw) => iw.close());
-          // Open this location's info window
           infoWindow.open({
             map: mapRef.current,
             anchor: marker,
@@ -113,7 +124,6 @@ const ContactLocations = () => {
       });
     };
 
-    // Check if Google Maps API is loaded with marker library
     if (window.google && window.google.maps && window.google.maps.marker) {
       setIsLoaded(true);
       initializeMap();
@@ -126,95 +136,111 @@ const ContactLocations = () => {
         }
       }, 500);
 
-      setTimeout(() => {
-        clearInterval(checkGoogleMapsAPI);
-        console.error("Google Maps API or marker library failed to load");
-      }, 10000);
-
       return () => clearInterval(checkGoogleMapsAPI);
     }
 
-    // Cleanup function
     return () => {
-      if (markersRef.current) {
-        markersRef.current.forEach((marker) => {
-          marker.map = null;
-        });
-        markersRef.current = [];
-      }
-      if (infoWindowsRef.current) {
-        infoWindowsRef.current.forEach((infoWindow) => {
-          infoWindow.close();
-        });
-        infoWindowsRef.current = [];
-      }
+      markersRef.current?.forEach((marker) => (marker.map = null));
+      infoWindowsRef.current?.forEach((infoWindow) => infoWindow.close());
+      markersRef.current = [];
+      infoWindowsRef.current = [];
     };
   }, []);
 
   return (
-    <div className="flex flex-col md:flex-row items-start md:items-center bg-white text-black p-6 md:p-12 gap-8">
-      {/* Left Column */}
-      <motion.div
-        initial={{ opacity: 0, x: -50 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.6 }}
-        className="w-full md:w-1/2"
-      >
-        <h1 className="text-2xl md:text-4xl font-bold mb-4">
-          "Connecting You Everywhere You Need!"
-        </h1>
-        <div className="bg-gray-100 p-6 rounded-lg shadow-md">
-          <h2 className="text-lg font-semibold mb-2 flex items-center">
-          <FaMapMarkerAlt className="text-black text-xl mr-3" />{contactDetails.companyName}
-          </h2>
-          <p className="flex items-center">
-          <FaUserAlt className="text-black text-xl mr-3" /> {contactDetails.name}
-          </p>
-          <a href="tel:+919063060170" className="flex items-center">
-          <FaPhone className="text-black text-xl mr-3" /> {contactDetails.phone1} <br />
-            {contactDetails.phone2}
-          </a> 
-          <a href={`mailto:${contactDetails.email}`} className="flex items-center">
-          <FaEnvelope className="text-black text-xl mr-3" /> {contactDetails.email}
-          </a>
-         <div className="flex space-x-4 mt-5">
-         <a
-              href="https://wa.me/919063060170"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-black hover:text-gray-600"
-            >
-              <FaWhatsapp className="text-2xl" />
-            </a>
-            <a
-              href="#"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-black hover:text-gray-600"
-            >
-              <FaInstagram className="text-2xl" />
-            </a>
-         </div>
-        </div>
-        <p className="mt-4 text-sm">
-          We have multiple franchises across Andhra Pradesh and Telangana. Click
-          the map markers to learn more about each location!
-        </p>
-      </motion.div>
+    <div id="contact" className="container mx-auto px-4 py-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {/* Left Column - Contact Information */}
+        <div className="space-y-6">
+          <h1 className="text-3xl md:text-4xl font-bold mb-6">
+            "Connecting You Everywhere You Need!"
+          </h1>
 
-      {/* Right Column with Map */}
-      <motion.div
-        initial={{ opacity: 0, x: 50 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.6 }}
-        className="w-full md:w-1/2 flex justify-center"
-      >
-        <div
-          ref={mapContainerRef}
-          style={{ width: "100%", height: "400px" }}
-          className="rounded-lg shadow-lg"
-        />
-      </motion.div>
+          {/* Contact Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {contactDetails.map((contact, index) => (
+              <div key={index} className="bg-white rounded-lg shadow-lg p-4">
+                <div className="flex items-center mb-3">
+                  <FaUserAlt className="text-black text-xl mr-3" />
+                  <div>
+                    <h3 className="font-semibold">{contact.name}</h3>
+                    <p className="text-sm text-gray-600">{contact.role}</p>
+                  </div>
+                </div>
+                <a href={`tel:${contact.phone1}`} className="flex items-center mb-2 hover:text-blue-600">
+                  <FaPhone className="text-black text-xl mr-3" />
+                  <span>{contact.phone1}</span>
+                </a>
+                {contact.phone2 && (
+                  <a href={`tel:${contact.phone2}`} className="flex items-center mb-2 hover:text-blue-600">
+                    <FaPhone className="text-black text-xl mr-3" />
+                    <span>{contact.phone2}</span>
+                  </a>
+                )}
+              </div>
+            ))}
+          </div>
+
+          {/* Email and Social Links */}
+          <div className="bg-white rounded-lg shadow-lg p-4">
+            <a href={`mailto:${email}`} className="flex items-center mb-4 hover:text-blue-600">
+              <FaEnvelope className="text-black text-xl mr-3" />
+              <span>{email}</span>
+            </a>
+            <div className="flex space-x-4">
+              <a
+                href="https://wa.me/919063060170"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-black hover:text-green-600 transition-colors"
+              >
+                <FaWhatsapp className="text-2xl" />
+              </a>
+              <a
+                href="#"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-black hover:text-pink-600 transition-colors"
+              >
+                <FaInstagram className="text-2xl" />
+              </a>
+            </div>
+          </div>
+
+          {/* Location Cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
+            {locations.map((location, index) => (
+              <div key={index} className="bg-white rounded-lg shadow-lg p-4 hover:shadow-xl transition-shadow">
+                <div className="flex items-start justify-between">
+                  <div className="flex items-start space-x-3">
+                    <FaMapMarkerAlt className="text-red-500 text-xl mt-1" />
+                    <div>
+                      <h3 className="font-semibold text-sm">{location.name}</h3>
+                      <p className="text-sm text-gray-600 mt-1">{location.address}</p>
+                    </div>
+                  </div>
+                  <a
+                    href={getGoogleMapsUrl(location)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-600 hover:text-blue-800"
+                  >
+                    <FaExternalLinkAlt className="text-lg" />
+                  </a>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Right Column - Map */}
+        <div className="h-[600px] lg:h-full min-h-[400px] relative">
+          <div
+            ref={mapContainerRef}
+            className="w-full h-full rounded-lg shadow-lg"
+          />
+        </div>
+      </div>
     </div>
   );
 };
